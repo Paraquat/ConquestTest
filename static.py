@@ -2,29 +2,19 @@ import sys, os
 from env import set_env
 sys.path.append("/Users/zamaan/Conquest/ase/conquest")
 
+from generic import GenericTest
 import numpy as np
 from ase.calculators.conquest import Conquest
 
 from pdb import set_trace
 
-vector_fmt = '{0:<20.10f}{1:<20.10f}{2:<20.10f}\n'
+vector_fmt = '{0:>20.10f}{1:>20.10f}{2:>20.10f}\n'
 
-class StaticTest:
+class StaticTest(GenericTest):
 
   def __init__(self, number, name, atoms, basis_size=None, verbose=False):
-    self.number = number
-    self.name = name
-    self.atoms = atoms
-    self.verbose = verbose
 
-    self.fname = name + ".ref"
-    self.natoms = len(self.atoms.positions)
-
-    # Default energy, force, stress thresholds
-    self.dE = 1.0E-8
-    self.dF = 1.0E-5
-    self.dS = 1E-3
-
+    super().__init__(number, name, atoms, basis_size, verbose)
     # Values to compare
     self.energy = None
     self.forces = None
@@ -32,21 +22,6 @@ class StaticTest:
     self.energy_ref = None
     self.forces_ref = None
     self.stress_ref = None
-    self.basis = {}
-    for species in self.atoms.get_chemical_symbols():
-      self.basis[species] = {"basis_size": basis_size,
-                             "gen_basis": True,
-                             "pseudopotential_type": "hamann"}
-
-  def set_thresh(self, dE=None, dF=None, dS=None):
-    if dE:
-      self.dE = dE
-
-    if dF:
-      self.dF = dF
-
-    if dF:
-      self.dS = dS
 
   def calculate(self, grid_cutoff, xc, kpts, **conquest_keywords):
     self.calc = Conquest(grid_cutoff=grid_cutoff,
@@ -68,7 +43,7 @@ class StaticTest:
 
     if energy_diff > self.dE:
       if self.verbose:
-        print(f'Test {self.number}, {self.name} failed: dE = {self.energy_diff}')
+        print(f'Test {self.number}, {self.name} failed: dE = {energy_diff}')
       passed = False
 
     for i in range(self.natoms):
@@ -107,3 +82,4 @@ class StaticTest:
       for f in self.forces:
         outfile.write(vector_fmt.format(*f))
       outfile.write(vector_fmt.format(*self.stress))
+    print(f'Test {self.number}, {self.name}... reference data written to {self.fname}')

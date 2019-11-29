@@ -6,8 +6,8 @@ class BlackBoxTest:
     self.tester = test_object
     self.read = read
 
-  def run_test(self, grid_cutoff, xc, kpts):
-    self.tester.calculate(grid_cutoff, xc, kpts)
+  def run_test(self, grid_cutoff, xc, kpts, flags={}):
+    self.tester.calculate(grid_cutoff, xc, kpts, **flags)
     if self.read:
       self.tester.read_reference()
       self.tester.compare()

@@ -10,8 +10,6 @@ def run_water_molecule(number, read=True):
   xc = "PBE"
   kpts = [1,1,1]
 
-  # construct the water molecule
-
   positions = [(3.9688293675, 3.9688293675, 3.9688293675),
                (3.9688293675, 4.7396710057, 3.3695305912),
                (3.9688293675, 3.1979854637, 3.3695334984)]
