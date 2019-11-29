@@ -1,7 +1,4 @@
 import sys, os
-from env import set_env
-sys.path.append("/Users/zamaan/Conquest/ase/conquest")
-
 from generic import GenericTest
 import numpy as np
 from ase.calculators.conquest import Conquest
@@ -24,13 +21,7 @@ class StaticTest(GenericTest):
     self.stress_ref = None
 
   def calculate(self, grid_cutoff, xc, kpts, **conquest_keywords):
-    self.calc = Conquest(grid_cutoff=grid_cutoff,
-                         xc=xc,
-                         basis=self.basis,
-                         kpts=kpts,
-                         **conquest_keywords)
-    self.atoms.set_calculator(self.calc)
-    self.atoms.get_potential_energy()
+    super().calculate(grid_cutoff, xc, kpts, **conquest_keywords)
     self.energy = self.atoms.calc.results["energy"]
     self.forces = self.atoms.calc.results["forces"]
     self.stress = self.atoms.calc.results["stress"][0:3]
@@ -42,28 +33,20 @@ class StaticTest(GenericTest):
     stress_diff = np.abs(self.stress - self.stress_ref)
 
     if energy_diff > self.dE:
-      if self.verbose:
-        print(f'Test {self.number}, {self.name} failed: dE = {energy_diff}')
+      self.print_fail("deltaE", energy_diff)
       passed = False
 
     for i in range(self.natoms):
       for j in range(3):
         if forces_diff[i,j] > self.dF:
-          if self.verbose:
-            print(f'Test {self.number}, {self.name} failed: atom {i+1} component {j+1} dF = {forces_diff[i,j]}')
+          self.print_fail("deltaF", energy_diff, component=j, atom=i)
           passed = False
 
     for j in range(3):
       if stress_diff[j] > self.dS:
-        if self.verbose:
-          print(f'Test {self.number}, {self.name} failed: component {j+1} dS = {stress_diff[i,j]}')
+        self.print_fail("deltaS", energy_diff, component=j)
 
-    if passed:
-      print(f'Test {self.number}, {self.name}... PASSED')
-    else:
-      print(f'Test {self.number}, {self.name}... FAILED')
-
-
+    self.print_result(passed)
 
   def read_reference(self):
     with open(self.fname, 'r') as infile:

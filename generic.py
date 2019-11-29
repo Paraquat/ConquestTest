@@ -1,7 +1,5 @@
 import sys, os
 import os.path
-sys.path.append("/Users/zamaan/Conquest/ase/conquest")
-
 import numpy as np
 from ase.calculators.conquest import Conquest
 
@@ -35,6 +33,15 @@ class GenericTest:
       os.mkdir(refdir)
     self.fname = os.path.join(refdir, name+".ref")
 
+  def calculate(self, grid_cutoff, xc, kpts, **conquest_keywords):
+    self.calc = Conquest(grid_cutoff=grid_cutoff,
+                         xc=xc,
+                         basis=self.basis,
+                         kpts=kpts,
+                         **conquest_keywords)
+    self.atoms.set_calculator(self.calc)
+    self.atoms.get_potential_energy()
+
   def set_thresh(self, dE=None, dF=None, dS=None):
     if dE:
       self.dE = dE
@@ -44,3 +51,18 @@ class GenericTest:
 
     if dF:
       self.dS = dS
+
+  def print_fail(self, quantity, scalar, component=None, atom=None):
+      if self.verbose:
+        if component is None and atom is None:
+          print(f'Test {self.number}, {self.name} failed: {quantity} = {scalar}')
+        elif component is None:
+          print(f'Test {self.number}, {self.name} failed: component {component+1} {quantity} = {scalar}')
+        else:
+          print(f'Test {self.number}, {self.name} failed: atom {atom+1} component {component+1} {quantity} = {scalar}')
+
+  def print_result(self, passed):
+    if passed:
+      print(f'Test {self.number}, {self.name}... PASSED')
+    else:
+      print(f'Test {self.number}, {self.name}... FAILED')
