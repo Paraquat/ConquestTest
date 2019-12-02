@@ -9,9 +9,8 @@ vector_fmt = '{0:>20.10f}{1:>20.10f}{2:>20.10f}\n'
 
 class StaticTest(GenericTest):
 
-  def __init__(self, number, name, atoms, basis_size=None, verbose=False):
-
-    super().__init__(number, name, atoms, basis_size, verbose)
+  def __init__(self, number, name, atoms, verbose=False):
+    super().__init__(number, name, atoms, verbose)
     # Values to compare
     self.energy = None
     self.forces = None
@@ -20,8 +19,8 @@ class StaticTest(GenericTest):
     self.forces_ref = None
     self.stress_ref = None
 
-  def calculate(self, grid_cutoff, xc, kpts, **conquest_keywords):
-    super().calculate(grid_cutoff, xc, kpts, **conquest_keywords)
+  def calculate(self, grid_cutoff, xc, kpts, basis, **conquest_keywords):
+    super().calculate(grid_cutoff, xc, kpts, basis, **conquest_keywords)
     self.energy = self.atoms.calc.results["energy"]
     self.forces = self.atoms.calc.results["forces"]
     self.stress = self.atoms.calc.results["stress"][0:3]
@@ -48,8 +47,8 @@ class StaticTest(GenericTest):
 
     self.print_result(passed)
 
-  def read_reference(self):
-    with open(self.fname, 'r') as infile:
+  def read_reference(self, path):
+    with open(path, 'r') as infile:
       self.energy_ref = float(infile.readline().strip())
       self.forces_ref = []
       for i in range(self.natoms):
@@ -59,10 +58,10 @@ class StaticTest(GenericTest):
       self.forces_ref = np.array(self.forces_ref)
       self.stress_ref = np.array(self.stress_ref)
 
-  def write_reference(self):
-    with open(self.fname, 'w') as outfile:
+  def write_reference(self, path):
+    with open(path, 'w') as outfile:
       outfile.write(f'{self.energy:<20.10f}\n')
       for f in self.forces:
         outfile.write(vector_fmt.format(*f))
       outfile.write(vector_fmt.format(*self.stress))
-    print(f'Test {self.number}, {self.name}... reference data written to {self.fname}')
+    print(f'Test {self.number}, {self.name}... reference data written to {path}')

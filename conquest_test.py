@@ -12,9 +12,11 @@ set_env(cq_exe, nprocs, pp_path, makeion_exe, ase_path)
 from water_molecule import run_water_molecule
 from diamond import run_diamond
 from silicon import run_silicon
+from diamond_mssf import run_diamond_mssf
 
 run_water_molecule(1, read=True)
 nprocs = 4
 set_env(cq_exe, nprocs, pp_path, makeion_exe, ase_path)
 run_diamond(2, read=True)
 run_silicon(3, read=True)
+run_diamond_mssf(4, read=True)

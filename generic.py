@@ -8,7 +8,7 @@ from pdb import set_trace
 
 class GenericTest:
 
-  def __init__(self, number, name, atoms, basis_size=None, verbose=False):
+  def __init__(self, number, name, atoms, verbose=False):
     self.number = number
     self.name = name
     self.atoms = atoms
@@ -21,19 +21,24 @@ class GenericTest:
     self.dF = 1.0E-5
     self.dS = 1E-3
 
-    self.basis = {}
-    for species in self.atoms.get_chemical_symbols():
-      self.basis[species] = {"basis_size": basis_size,
-                             "gen_basis": True,
-                             "pseudopotential_type": "hamann"}
-
     # storing reference data
     refdir = "reference"
     if not os.path.isdir(refdir):
       os.mkdir(refdir)
-    self.fname = os.path.join(refdir, name+".ref")
+    self.path = os.path.join(refdir, name)
 
-  def calculate(self, grid_cutoff, xc, kpts, **conquest_keywords):
+  def calculate(self, grid_cutoff, xc, kpts, basis, **conquest_keywords):
+
+    # set up basis/.ion files
+    if isinstance(basis, dict):
+      self.basis = basis
+    elif isinstance(basis, str):
+      self.basis = {}
+      for species in self.atoms.get_chemical_symbols():
+        self.basis[species] = {"basis_size": basis,
+                              "gen_basis": True,
+                              "pseudopotential_type": "hamann"}
+
     self.calc = Conquest(grid_cutoff=grid_cutoff,
                          xc=xc,
                          basis=self.basis,
@@ -41,6 +46,9 @@ class GenericTest:
                          **conquest_keywords)
     self.atoms.set_calculator(self.calc)
     self.atoms.get_potential_energy()
+
+  def get_path(self):
+    return self.path
 
   def set_thresh(self, dE=None, dF=None, dS=None):
     if dE:
