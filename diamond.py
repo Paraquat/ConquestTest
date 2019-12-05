@@ -1,11 +1,12 @@
 import numpy as np
 from static import StaticTest
-from test import BlackBoxTest
+from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_diamond(number, read=True, ref=False):
+def run_diamond(number, ref=False):
 
   name = "diamond"
+  description = "Diamond 8 atoms SZP diagonalisation"
   grid_cutoff = 80.0
   xc = "LDA"
   kpts = [4,4,4]
@@ -13,6 +14,6 @@ def run_diamond(number, read=True, ref=False):
 
   diamond = bulk('C', 'diamond', a=3.6, cubic=True)
 
-  tester = StaticTest(number, name, diamond, verbose=True)
-  bbtest = BlackBoxTest(tester, read, ref)
-  bbtest.run_test(grid_cutoff, xc, kpts, basis)
+  tester = StaticTest(number, name, description, diamond, verbose=True)
+  handler = TestIOHandler(tester, ref)
+  handler.run_test(grid_cutoff, xc, kpts, basis)

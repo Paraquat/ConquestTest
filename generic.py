@@ -8,9 +8,10 @@ from pdb import set_trace
 
 class GenericTest:
 
-  def __init__(self, number, name, atoms, verbose=False):
+  def __init__(self, number, name, description, atoms, verbose=False):
     self.number = number
     self.name = name
+    self.description = description
     self.atoms = atoms
     self.verbose = verbose
 
@@ -19,13 +20,7 @@ class GenericTest:
     # Default energy, force, stress thresholds
     self.dE = 1.0E-8
     self.dF = 1.0E-5
-    self.dS = 1E-3
-
-    # storing reference data
-    refdir = "reference"
-    if not os.path.isdir(refdir):
-      os.mkdir(refdir)
-    self.path = os.path.join(refdir, name)
+    self.dS = 1.0E-3
 
   def calculate(self, grid_cutoff, xc, kpts, basis, **conquest_keywords):
 
@@ -36,10 +31,11 @@ class GenericTest:
       self.basis = {}
       for species in self.atoms.get_chemical_symbols():
         self.basis[species] = {"basis_size": basis,
-                              "gen_basis": True,
-                              "pseudopotential_type": "hamann"}
+                               "gen_basis": True,
+                               "pseudopotential_type": "hamann"}
 
-    self.calc = Conquest(grid_cutoff=grid_cutoff,
+    self.calc = Conquest(label=self.name,
+                         grid_cutoff=grid_cutoff,
                          xc=xc,
                          basis=self.basis,
                          kpts=kpts,
@@ -47,8 +43,8 @@ class GenericTest:
     self.atoms.set_calculator(self.calc)
     self.atoms.get_potential_energy()
 
-  def get_path(self):
-    return self.path
+  def get_name(self):
+    return self.name
 
   def set_thresh(self, dE=None, dF=None, dS=None):
     if dE:
@@ -71,6 +67,6 @@ class GenericTest:
 
   def print_result(self, passed):
     if passed:
-      print(f'Test {self.number}, {self.name}... PASSED')
+      print(f'Test {self.number}, {self.description}... PASSED')
     else:
-      print(f'Test {self.number}, {self.name}... FAILED')
+      print(f'Test {self.number}, {self.description}... FAILED')

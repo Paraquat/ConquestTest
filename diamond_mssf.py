@@ -1,11 +1,12 @@
 import numpy as np
 from static import StaticTest
-from test import BlackBoxTest
+from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_diamond_mssf(number, read=True, ref=False):
+def run_diamond_mssf(number, ref=False):
 
   name = "diamond_mssf"
+  description = "Diamond 8 atoms DZP/SZ multisite"
   grid_cutoff = 80.0
   xc = "LDA"
   kpts = [4,4,4]
@@ -24,6 +25,6 @@ def run_diamond_mssf(number, read=True, ref=False):
                  "Atom.MultisiteRange"   : 7.0,
                  "Atom.LFDRange"         : 7.0}}
 
-  tester = StaticTest(number, name, diamond, verbose=True)
-  bbtest = BlackBoxTest(tester, read, ref)
-  bbtest.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)
+  tester = StaticTest(number, name, description, diamond, verbose=True)
+  handler = TestIOHandler(tester, ref)
+  handler.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)

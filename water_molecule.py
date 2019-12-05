@@ -1,11 +1,12 @@
 import numpy as np
 from static import StaticTest
-from test import BlackBoxTest
+from iohandler import TestIOHandler
 from ase import Atoms
 
-def run_water_molecule(number, read=True, ref=False):
+def run_water_molecule(number, ref=False):
 
   name = "H2O"
+  description = "Water molecule DZP diagonalisation"
   grid_cutoff = 100.0
   xc = "PBE"
   kpts = [1,1,1]
@@ -17,6 +18,6 @@ def run_water_molecule(number, read=True, ref=False):
   water = Atoms(name, positions=positions)
   water.set_cell(8*np.identity(3))
 
-  tester = StaticTest(number, name, water, verbose=True)
-  bbtest = BlackBoxTest(tester, read, ref)
-  bbtest.run_test(grid_cutoff, xc, kpts, basis)
+  tester = StaticTest(number, name, description, water, verbose=True)
+  handler = TestIOHandler(tester, ref)
+  handler.run_test(grid_cutoff, xc, kpts, basis)

@@ -1,11 +1,12 @@
 import numpy as np
 from static import StaticTest
-from test import BlackBoxTest
+from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_silicon(number, read=True, ref=False):
+def run_silicon(number, ref=False):
 
   name = "silicon"
+  description = "Silicon 8 atoms SZ order(N)"
   grid_cutoff = 80.0
   xc = "LDA"
   kpts = [4,4,4]
@@ -17,6 +18,6 @@ def run_silicon(number, read=True, ref=False):
                     "DM.L_range"       : 8.0,
                     "minE.LTolerance" : 1.0E-6}
 
-  tester = StaticTest(number, name, silicon, verbose=True)
-  bbtest = BlackBoxTest(tester, read, ref)
-  bbtest.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)
+  tester = StaticTest(number, name, description, silicon, verbose=True)
+  handler = TestIOHandler(tester, ref)
+  handler.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)

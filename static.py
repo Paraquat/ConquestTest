@@ -9,8 +9,8 @@ vector_fmt = '{0:>20.10f}{1:>20.10f}{2:>20.10f}\n'
 
 class StaticTest(GenericTest):
 
-  def __init__(self, number, name, atoms, verbose=False):
-    super().__init__(number, name, atoms, verbose)
+  def __init__(self, number, name, description, atoms, verbose=False):
+    super().__init__(number, name, description, atoms, verbose)
     # Values to compare
     self.energy = None
     self.forces = None
@@ -47,7 +47,7 @@ class StaticTest(GenericTest):
 
     self.print_result(passed)
 
-  def read_reference(self, path):
+  def read(self, path):
     with open(path, 'r') as infile:
       self.energy_ref = float(infile.readline().strip())
       self.forces_ref = []
@@ -58,7 +58,7 @@ class StaticTest(GenericTest):
       self.forces_ref = np.array(self.forces_ref)
       self.stress_ref = np.array(self.stress_ref)
 
-  def write_reference(self, path):
+  def write(self, path):
     with open(path, 'w') as outfile:
       outfile.write(f'{self.energy:<20.10f}\n')
       for f in self.forces:
