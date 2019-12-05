@@ -64,4 +64,4 @@ class StaticTest(GenericTest):
       for f in self.forces:
         outfile.write(vector_fmt.format(*f))
       outfile.write(vector_fmt.format(*self.stress))
-    print(f'Test {self.number}, {self.name}... reference data written to {path}')
+    print(f'Test {self.number}, {self.name}... data written to {path}')
