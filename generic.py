@@ -14,13 +14,7 @@ class GenericTest:
     self.description = description
     self.atoms = atoms
     self.verbose = verbose
-
     self.natoms = len(self.atoms.positions)
-
-    # Default energy, force, stress thresholds
-    self.dE = 1.0E-8
-    self.dF = 1.0E-5
-    self.dS = 1.0E-3
 
   def calculate(self, grid_cutoff, xc, kpts, basis, **conquest_keywords):
 
@@ -48,16 +42,6 @@ class GenericTest:
 
   def get_name(self):
     return self.name
-
-  def set_thresh(self, dE=None, dF=None, dS=None):
-    if dE:
-      self.dE = dE
-
-    if dF:
-      self.dF = dF
-
-    if dF:
-      self.dS = dS
 
   def print_fail(self, quantity, scalar, component=None, atom=None):
       if self.verbose:

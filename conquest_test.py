@@ -27,6 +27,7 @@ from diamond_mssf import run_diamond_mssf
 from pto import run_pto
 from ice import run_ice
 from mgo import run_mgo
+from silicon_eos import run_silicon_eos
 
 if cliopts.ref:
   print('Generating reference data')
@@ -40,3 +41,4 @@ run_diamond_mssf(4, env, ref=cliopts.ref)
 run_pto(5, env, ref=cliopts.ref)
 run_ice(6, env, ref=cliopts.ref)
 run_mgo(7, env, ref=cliopts.ref)
+run_silicon_eos(8, env, ref=cliopts.ref)

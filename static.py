@@ -5,8 +5,6 @@ from ase.calculators.conquest import Conquest
 
 from pdb import set_trace
 
-vector_fmt = '{0:>20.10f}{1:>20.10f}{2:>20.10f}\n'
-
 class StaticTest(GenericTest):
 
   def __init__(self, number, name, description, atoms, verbose=False):
@@ -19,11 +17,24 @@ class StaticTest(GenericTest):
     self.forces_ref = None
     self.stress_ref = None
 
+    # Default energy, force, stress thresholds
+    self.dE = 1.0E-8
+    self.dF = 1.0E-5
+    self.dS = 1.0E-3
+
   def calculate(self, grid_cutoff, xc, kpts, basis, **conquest_keywords):
     super().calculate(grid_cutoff, xc, kpts, basis, **conquest_keywords)
     self.energy = self.atoms.calc.results["energy"]
     self.forces = self.atoms.calc.results["forces"]
     self.stress = self.atoms.calc.results["stress"][0:3]
+
+  def set_thresh(self, dE=None, dF=None, dS=None):
+    if dE:
+      self.dE = dE
+    if dF:
+      self.dF = dF
+    if dF:
+      self.dS = dS
 
   def compare(self):
     passed = True
@@ -59,6 +70,8 @@ class StaticTest(GenericTest):
       self.stress_ref = np.array(self.stress_ref)
 
   def write(self, path):
+    vector_fmt = '{0:>20.10f}{1:>20.10f}{2:>20.10f}\n'
+
     with open(path, 'w') as outfile:
       outfile.write(f'{self.energy:<20.10f}\n')
       for f in self.forces:
