@@ -3,13 +3,14 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_diamond_mssf(number, ref=False):
+def run_diamond_mssf(number, env, ref=False):
 
   name = "diamond_mssf"
   description = "Diamond 8 atoms DZP/SZ multisite"
   grid_cutoff = 80.0
   xc = "LDA"
   kpts = [4,4,4]
+  env.set_nprocs(4)
 
   diamond = bulk('C', 'diamond', a=3.6, cubic=True)
 

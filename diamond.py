@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_diamond(number, ref=False):
+def run_diamond(number, env, ref=False):
 
   name = "diamond"
   description = "Diamond 8 atoms SZP diagonalisation"
@@ -11,6 +11,7 @@ def run_diamond(number, ref=False):
   xc = "LDA"
   kpts = [4,4,4]
   basis = "small"
+  env.set_nprocs(4)
 
   diamond = bulk('C', 'diamond', a=3.6, cubic=True)
 

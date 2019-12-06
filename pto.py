@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase import Atoms
 
-def run_pto(number, ref=False):
+def run_pto(number, env, ref=False):
 
   name = "PTO"
   description = "Lead titanate 5 atoms SZP diagonalisation"
@@ -13,6 +13,7 @@ def run_pto(number, ref=False):
   basis = "small"
   conquest_flags = {"Diag.SmearingType": 0,
                     "Diag.kT"          : 0.0003674931}
+  env.set_nprocs(2)
 
   a = 3.95
   positions = [(0.0, 0.0, 0.0),

@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase import Atoms
 
-def run_water_molecule(number, ref=False):
+def run_water_molecule(number, env, ref=False):
 
   name = "H2O"
   description = "Water molecule DZP diagonalisation"
@@ -11,6 +11,7 @@ def run_water_molecule(number, ref=False):
   xc = "PBE"
   kpts = [1,1,1]
   basis = "medium"
+  env.set_nprocs(1)
 
   positions = [(3.9688293675, 3.9688293675, 3.9688293675),
                (3.9688293675, 4.7396710057, 3.3695305912),

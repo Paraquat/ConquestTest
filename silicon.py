@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_silicon(number, ref=False):
+def run_silicon(number, env, ref=False):
 
   name = "silicon"
   description = "Silicon 8 atoms SZ order(N)"
@@ -11,6 +11,7 @@ def run_silicon(number, ref=False):
   xc = "LDA"
   kpts = [4,4,4]
   basis = "minimal"
+  env.set_nprocs(4)
 
   silicon = bulk('Si', 'diamond', a=5.563158, cubic=True)
 

@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase.build import bulk
 
-def run_mgo(number, ref=False):
+def run_mgo(number, env, ref=False):
 
   name = "MgO"
   description = "Magnesium Oxide 8 atoms SZP diagonalisation"
@@ -11,6 +11,8 @@ def run_mgo(number, ref=False):
   xc = "PBE"
   kpts = [4,4,4]
   basis = "small"
+  env.set_nprocs(4)
+
   mgo = bulk('MgO', 'rocksalt', a=4.2798, cubic=True)
 
   tester = StaticTest(number, name, description, mgo, verbose=True)

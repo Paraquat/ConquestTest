@@ -1,13 +1,24 @@
 #!/usr/local/bin/python3
 
-from env import set_env
+import argparse
+from env import ConquestEnv
 
-cq_exe = "Conquest_RemoveNR"
-nprocs = 1                 # Number of MPI process for CONQUEST
-pp_path = "/Users/zamaan/Conquest/PPDB/" # Path to pseudo database
-makeion_exe = "MakeIonFiles"             # MakeIonFiles executable
-ase_path = "/Users/zamaan/Conquest/ase/conquest" # path to ASE (CONQUEST) root
-set_env(cq_exe, nprocs, pp_path, makeion_exe, ase_path)
+parser = argparse.ArgumentParser(description="Run CONQUEST functionality tests",
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--reference', action='store_true', dest='ref',
+                    default=False, help='Generate reference dataset')
+parser.add_argument('--cqexe', action='store', dest='cq_exe',
+                    help='Conquest executable', default=None)
+parser.add_argument('--basisgen', action='store', dest='makeion_exe',
+                    help='Conquest basis generation tool executable', default='MakeIonFiles')
+parser.add_argument('--pseudopath', action='store', dest='pp_path',
+                    help='Path to pseudopotential library', default=None)
+parser.add_argument('--asepath', action='store', dest='ase_path',
+                    help='Path to ASE library', default=None)
+cliopts = parser.parse_args()
+
+env = ConquestEnv(cliopts.cq_exe, 1, cliopts.pp_path, cliopts.makeion_exe,
+                  cliopts.ase_path)
 
 from water_molecule import run_water_molecule
 from diamond import run_diamond
@@ -17,13 +28,15 @@ from pto import run_pto
 from ice import run_ice
 from mgo import run_mgo
 
-run_water_molecule(1)
-set_env(cq_exe, 4, pp_path, makeion_exe, ase_path)
-run_diamond(2)
-run_silicon(3)
-run_diamond_mssf(4)
-set_env(cq_exe, 2, pp_path, makeion_exe, ase_path)
-run_pto(5)
-set_env(cq_exe, 4, pp_path, makeion_exe, ase_path)
-run_ice(6)
-run_mgo(7)
+if cliopts.ref:
+  print('Generating reference data')
+else:
+  print('Running tests')
+
+run_water_molecule(1, env, ref=cliopts.ref)
+run_diamond(2, env, ref=cliopts.ref)
+run_silicon(3, env, ref=cliopts.ref)
+run_diamond_mssf(4, env, ref=cliopts.ref)
+run_pto(5, env, ref=cliopts.ref)
+run_ice(6, env, ref=cliopts.ref)
+run_mgo(7, env, ref=cliopts.ref)

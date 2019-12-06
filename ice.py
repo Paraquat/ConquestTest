@@ -3,7 +3,7 @@ from static import StaticTest
 from iohandler import TestIOHandler
 from ase import Atoms
 
-def run_ice(number, ref=False):
+def run_ice(number, env, ref=False):
 
   name = "IceXI"
   description = "Ice XI 8 molecules DZP diagonalisation"
@@ -11,6 +11,7 @@ def run_ice(number, ref=False):
   xc = "PBE"
   kpts = [9,9,9]
   basis = "medium"
+  env.set_nprocs(4)
 
   cell = [4.137266, 7.298682, 6.740787]
   positions = [(0.00004235166920939, 0.52132867339661904, 0.01312804623422056),

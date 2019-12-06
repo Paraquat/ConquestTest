@@ -43,6 +43,9 @@ class GenericTest:
     self.atoms.set_calculator(self.calc)
     self.atoms.get_potential_energy()
 
+  def set_exe(self, cq_command, nprocs, cq_exe):
+    os.environ["ASE_CONQUEST_COMMAND"] = cq_command
+
   def get_name(self):
     return self.name
 
