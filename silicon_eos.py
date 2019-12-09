@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase.build import bulk
 
 def run_silicon_eos(number, env, ref=False):
+  """Silicon 8 atoms (diamond) SZ/diagonalisation LDA equation of state"""
 
   name = "silicon_eos"
   description = "Silicon 8 atoms SZ diagon equation of state"

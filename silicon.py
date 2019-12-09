@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase.build import bulk
 
 def run_silicon(number, env, ref=False):
+  """Silicon 8 atoms (diamond) SZ/ordern LDA """
 
   name = "silicon"
   description = "Silicon 8 atoms SZ order(N)"

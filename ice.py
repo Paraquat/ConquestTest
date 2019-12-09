@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase import Atoms
 
 def run_ice(number, env, ref=False):
+  """Water ice XIII 8 molecules (diamond) DZP/diagonalisation PBE"""
 
   name = "IceXI"
   description = "Ice XI 8 molecules DZP diagonalisation"

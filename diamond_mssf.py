@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase.build import bulk
 
 def run_diamond_mssf(number, env, ref=False):
+  """Carbon 8 atoms (diamond) DZP/SZ/MSSF/diagonalisation LDA """
 
   name = "diamond_mssf"
   description = "Diamond 8 atoms DZP/SZ multisite"

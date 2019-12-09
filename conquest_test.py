@@ -1,5 +1,28 @@
 #!/usr/local/bin/python3
 
+"""CONQUEST functionality tests
+
+This scripts performs CONQUEST functionality tests. A set of reference data can
+be generated using the --reference flag, and compared against a calculation
+by omitting the --reference flag.
+
+usage: conquest_test.py [-h] [--reference] [--cqexe CQ_EXE]
+                        [--basisgen MAKEION_EXE] [--pseudopath PP_PATH]
+                        [--asepath ASE_PATH]
+
+Run CONQUEST functionality tests
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --reference           Generate reference dataset (default: False)
+  --cqexe CQ_EXE        Conquest executable (default: None)
+  --basisgen MAKEION_EXE
+                        Conquest basis generation tool executable (default:
+                        MakeIonFiles)
+  --pseudopath PP_PATH  Path to pseudopotential library (default: None)
+  --asepath ASE_PATH    Path to ASE library (default: None)
+"""
+
 import argparse
 from env import ConquestEnv
 
@@ -34,6 +57,7 @@ if cliopts.ref:
 else:
   print('Running tests')
 
+# Run the tests
 run_water_molecule(1, env, ref=cliopts.ref)
 run_diamond(2, env, ref=cliopts.ref)
 run_silicon(3, env, ref=cliopts.ref)

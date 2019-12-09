@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase.build import bulk
 
 def run_mgo(number, env, ref=False):
+  """MgO 8 atoms (rocksalt) SZP/diagonalisation PBE """
 
   name = "MgO"
   description = "Magnesium Oxide 8 atoms SZP diagonalisation"

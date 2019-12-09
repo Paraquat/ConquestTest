@@ -17,7 +17,7 @@ class EOSTest(GenericTest):
   E0 : float
     Energy minimum from equation of state interpolation
   V0 : np.array (3 x natoms)
-    Volume minimum from equation of state interpolation
+    Equlibrium volume from equation of state interpolation
   B : np.array (3)
     Bulk modulus from equation of state
   E0_ref : float

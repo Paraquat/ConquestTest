@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase import Atoms
 
 def run_pto(number, env, ref=False):
+  """Lead titanate 6 atoms SZP/diagonalisation PBE """
 
   name = "PTO"
   description = "Lead titanate 5 atoms SZP diagonalisation"

@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase import Atoms
 
 def run_water_molecule(number, env, ref=False):
+  """Water molecule 3 atoms DZP/diagonalisation PBE"""
 
   name = "H2O"
   description = "Water molecule DZP diagonalisation"

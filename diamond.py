@@ -4,6 +4,7 @@ from iohandler import TestIOHandler
 from ase.build import bulk
 
 def run_diamond(number, env, ref=False):
+  """Carbon 8 atoms (diamond) SZP/diagonalisation LDA """
 
   name = "diamond"
   description = "Diamond 8 atoms SZP diagonalisation"
