@@ -77,7 +77,7 @@ class GenericTest:
     elif isinstance(basis, str):
       self.basis = {}
       for species in self.atoms.get_chemical_symbols():
-        Self.basis[species] = {"basis_size": basis,
+        self.basis[species] = {"basis_size": basis,
                                "gen_basis": True,
                                "pseudopotential_type": "hamann"}
 
