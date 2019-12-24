@@ -1,19 +1,35 @@
 import os, sys
 
+class EnvError(Exception):
+  """Exceptions related to test environment
+
+  Attributes
+  ----------
+  message : explanation of the error
+  """
+
+  def __init__(self, message):
+    self.message = message
+
 class ConquestEnv:
 
-  def __init__(self, cq_exe, nprocs, pp_path, makeion_exe, ase_path):
+  def __init__(self, cq_exe, nprocs, ase_path=None, pp_path=None,
+               makeion_exe=None, ion_path=None):
+    if (not pp_path) and (not ion_path):
+      raise EnvError("Either the pseudopotential path or the .ion path must \
+        be specified.")
     self.cq_exe = cq_exe
     self.nprocs = nprocs
-    self.pp_path = pp_path
-    self.makeion_exe = makeion_exe
-    self.ase_path = ase_path
     self.mpi_command = 'mpirun'
     self.mpi_nproc_flag = '-np'
-    self.set_ase_path(self.ase_path)
     self.set_cq_command(self.nprocs, self.cq_exe)
-    self.set_makeion_exe(self.makeion_exe)
-    self.set_pp_path(self.pp_path)
+    self.ion_path = ion_path
+    if ase_path:
+      self.set_ase_path(ase_path)
+    if makeion_exe:
+      self.set_makeion_exe(makeion_exe)
+    if pp_path:
+      self.set_pp_path(pp_path)
 
   def set_ase_path(self, ase_path):
     sys.path.append(ase_path)

@@ -12,6 +12,9 @@ def run_pto(number, env, ref=False):
   xc = "PBE"
   kpts = [9,9,9]
   basis = "small"
+  basis = {'Pb' : {'file' : 'Pb_SZP_v323_PBE.ion'},
+           'Ti' : {'file' : 'Ti_SZP_v323_PBE.ion'},
+           'O'  : {'file' : 'O_SZP_v323_PBE.ion'}}
   conquest_flags = {"Diag.SmearingType": 0,
                     "Diag.kT"          : 0.0003674931}
   env.set_nprocs(2)
@@ -27,4 +30,5 @@ def run_pto(number, env, ref=False):
 
   tester = StaticTest(number, name, description, pto, verbose=True)
   handler = TestIOHandler(tester, ref)
+  handler.set_ion_path(env.ion_path, basis)
   handler.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)

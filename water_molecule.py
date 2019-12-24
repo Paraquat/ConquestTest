@@ -11,7 +11,8 @@ def run_water_molecule(number, env, ref=False):
   grid_cutoff = 100.0
   xc = "PBE"
   kpts = [1,1,1]
-  basis = "medium"
+  basis = {'H' : {'file' : 'H_DZP_v323_PBE.ion'},
+           'O' : {'file' : 'O_DZP_v323_PBE.ion'}}
   env.set_nprocs(1)
 
   positions = [(3.9688293675, 3.9688293675, 3.9688293675),
@@ -22,4 +23,5 @@ def run_water_molecule(number, env, ref=False):
 
   tester = StaticTest(number, name, description, water, verbose=True)
   handler = TestIOHandler(tester, ref)
+  handler.set_ion_path(env.ion_path, basis)
   handler.run_test(grid_cutoff, xc, kpts, basis)

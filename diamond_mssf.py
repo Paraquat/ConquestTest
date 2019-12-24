@@ -9,7 +9,7 @@ def run_diamond_mssf(number, env, ref=False):
   name = "diamond_mssf"
   description = "Diamond 8 atoms DZP/SZ multisite"
   grid_cutoff = 80.0
-  xc = "LDA"
+  xc = "PBE"
   kpts = [4,4,4]
   env.set_nprocs(4)
 
@@ -20,7 +20,7 @@ def run_diamond_mssf(number, env, ref=False):
                     "Multisite.LFD.Min.ThreshE" : 1.0E-7,
                     "Multisite.LFD.Min.ThreshD" : 1.0E-7,
                     "Multisite.LFD.Min.MaxIteration" : 150}
-  basis = {"C": {"basis_size"            : "medium",
+  basis = {"C": {"file"                  : "C_DZP_v323_PBE.ion",
                  "gen_basis"             : True,
                  "pseudopotential_type"  : "hamann",
                  "Atom.NumberOfSupports" : 4,
@@ -29,4 +29,5 @@ def run_diamond_mssf(number, env, ref=False):
 
   tester = StaticTest(number, name, description, diamond, verbose=True)
   handler = TestIOHandler(tester, ref)
+  handler.set_ion_path(env.ion_path, basis)
   handler.run_test(grid_cutoff, xc, kpts, basis, flags=conquest_flags)

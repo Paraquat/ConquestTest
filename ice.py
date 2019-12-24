@@ -11,7 +11,8 @@ def run_ice(number, env, ref=False):
   grid_cutoff = 80.0
   xc = "PBE"
   kpts = [9,9,9]
-  basis = "medium"
+  basis = {'H' : {'file' : 'H_DZP_v323_PBE.ion'},
+           'O' : {'file' : 'O_DZP_v323_PBE.ion'}}
   env.set_nprocs(4)
 
   cell = [4.137266, 7.298682, 6.740787]
@@ -45,4 +46,5 @@ def run_ice(number, env, ref=False):
 
   tester = StaticTest(number, name, description, ice, verbose=True)
   handler = TestIOHandler(tester, ref)
+  handler.set_ion_path(env.ion_path, basis)
   handler.run_test(grid_cutoff, xc, kpts, basis)

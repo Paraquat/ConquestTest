@@ -24,6 +24,7 @@ optional arguments:
 """
 
 import argparse
+import os.path
 from env import ConquestEnv
 
 parser = argparse.ArgumentParser(description="Run CONQUEST functionality tests",
@@ -38,10 +39,20 @@ parser.add_argument('--pseudopath', action='store', dest='pp_path',
                     help='Path to pseudopotential library', default=None)
 parser.add_argument('--asepath', action='store', dest='ase_path',
                     help='Path to ASE library', default=None)
+parser.add_argument('--ionpath', action='store', dest='ion_path',
+                    help='Path to .ion files', default=None)
 cliopts = parser.parse_args()
 
-env = ConquestEnv(cliopts.cq_exe, 1, cliopts.pp_path, cliopts.makeion_exe,
-                  cliopts.ase_path)
+# directory of this script
+thisdir = os.path.dirname(os.path.realpath(__file__))
+if cliopts.ion_path:
+  ion_path = cliopts.ion_path
+else:
+  ion_path = os.path.join(thisdir, 'ion_files')
+
+env = ConquestEnv(cliopts.cq_exe, 1, ase_path=cliopts.ase_path,
+                  pp_path=cliopts.pp_path, makeion_exe=cliopts.makeion_exe,
+                  ion_path=ion_path)
 
 from water_molecule import run_water_molecule
 from diamond import run_diamond

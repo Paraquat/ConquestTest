@@ -11,11 +11,13 @@ def run_mgo(number, env, ref=False):
   grid_cutoff = 80.0
   xc = "PBE"
   kpts = [4,4,4]
-  basis = "small"
+  basis = {'Mg' : {'file' : 'Mg_SZP_v323_PBE.ion'},
+           'O'  : {'file' : 'O_SZP_v323_PBE.ion'}}
   env.set_nprocs(4)
 
   mgo = bulk('MgO', 'rocksalt', a=4.2798, cubic=True)
 
   tester = StaticTest(number, name, description, mgo, verbose=True)
   handler = TestIOHandler(tester, ref)
+  handler.set_ion_path(env.ion_path, basis)
   handler.run_test(grid_cutoff, xc, kpts, basis)

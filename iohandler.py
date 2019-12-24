@@ -57,6 +57,11 @@ class TestIOHandler:
     else:
       os.chdir(self.basedir)
 
+  def set_ion_path(self, ion_path, basis):
+    for species in basis:
+      if 'file' in basis[species]:
+        basis[species]['file'] = os.path.join(ion_path, basis[species]['file'])
+
   def run_test(self, grid_cutoff, xc, kpts, basis, flags={}):
     """Run the test
 
